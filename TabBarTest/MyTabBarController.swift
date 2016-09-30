@@ -8,6 +8,17 @@
 
 import Foundation
 import UIKit
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
 
 class MyTabBarController: UITabBarController, UITabBarControllerDelegate {
     
@@ -17,15 +28,15 @@ class MyTabBarController: UITabBarController, UITabBarControllerDelegate {
         self.delegate = self
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
     
     
-    func tabBarController(tabBarController: UITabBarController, animationControllerForTransitionFromViewController fromVC: UIViewController, toViewController toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func tabBarController(_ tabBarController: UITabBarController, animationControllerForTransitionFrom fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         
-        let currentIndex = self.viewControllers?.indexOf(fromVC)
-        let nextIndex = self.viewControllers?.indexOf(toVC)
+        let currentIndex = self.viewControllers?.index(of: fromVC)
+        let nextIndex = self.viewControllers?.index(of: toVC)
         
         if currentIndex < nextIndex {
             return TRReverseAnimation(tabBarController: tabBarController, lastIndex: tabBarController.selectedIndex)
@@ -35,7 +46,7 @@ class MyTabBarController: UITabBarController, UITabBarControllerDelegate {
     }
 
     
-    func tabBarController(tabBarController: UITabBarController, interactionControllerForAnimationController animationController: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+    func tabBarController(_ tabBarController: UITabBarController, interactionControllerFor animationController: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
         return nil
     }
     

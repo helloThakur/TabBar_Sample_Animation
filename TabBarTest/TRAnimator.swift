@@ -11,7 +11,7 @@ import UIKit
 
 class TRAnimator: UIPercentDrivenInteractiveTransition, UIViewControllerAnimatedTransitioning, UIViewControllerTransitioningDelegate {
     
-    private let ANIMATION_DURATION = 0.35
+    fileprivate let ANIMATION_DURATION = 0.35
     var transitionInProgress:Bool = false
     var tabBarController: UITabBarController!
     var lastIndex = 0
@@ -22,23 +22,23 @@ class TRAnimator: UIPercentDrivenInteractiveTransition, UIViewControllerAnimated
     }
 
     
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return ANIMATION_DURATION
     }
     
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
-        let fromViewController = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey)
-        let toViewController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+        let fromViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from)
+        let toViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)!
         
-        transitionContext.containerView()!.addSubview(toViewController.view)
+        transitionContext.containerView.addSubview(toViewController.view)
         
         toViewController.view.alpha = 0.0
-        UIView.animateWithDuration(ANIMATION_DURATION, animations: {
+        UIView.animate(withDuration: ANIMATION_DURATION, animations: {
             toViewController.view.alpha = 1.0
             }, completion: { (finished) in
                 
                 fromViewController?.view.removeFromSuperview()
-                transitionContext.completeTransition(!transitionContext.transitionWasCancelled())
+                transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
         })
     }
 }
